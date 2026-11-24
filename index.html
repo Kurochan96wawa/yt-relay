@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<meta name="robots" content="noindex">
+<title>player</title>
+<style>html,body{margin:0;height:100%;background:#000}iframe{position:fixed;inset:0;width:100%;height:100%;border:0}</style>
+</head>
+<body>
+<script>
+// ローカルのHTML(file://)は Referer を送れず、YouTube の埋め込みが「エラー153」になる。
+// このページを https 上に置いて間に挟むと、YouTube にはこのページの URL が参照元として渡り、再生できる。
+// 使い方: このページのURL + ?v=動画ID(11文字)。それ以外の入力は何も表示しない。
+(function(){
+  var v = new URLSearchParams(location.search).get('v') || '';
+  if(!/^[A-Za-z0-9_-]{11}$/.test(v)) return;
+  var f = document.createElement('iframe');
+  f.allow = 'autoplay; encrypted-media; picture-in-picture; fullscreen';
+  f.allowFullscreen = true;
+  f.referrerPolicy = 'strict-origin-when-cross-origin';
+  f.src = 'https://www.youtube-nocookie.com/embed/' + v + '?autoplay=1&rel=0&playsinline=1';
+  document.body.appendChild(f);
+})();
+</script>
+</body>
+</html>
